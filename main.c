@@ -40,19 +40,19 @@ int main(int argc, char *argv[])
     entry *pHead, *e;
     pHead = (entry *) malloc(sizeof(entry));
     printf("size of entry : %lu bytes\n", sizeof(entry));
-    e = pHead;
+    e = pHead; // two pointer point to the same address(e points to the address that pHead points to)
     e->pNext = NULL;
 
 #if defined(__GNUC__)
     __builtin___clear_cache((char *) pHead, (char *) pHead + sizeof(entry));
 #endif
     clock_gettime(CLOCK_REALTIME, &start);
-    while (fgets(line, sizeof(line), fp)) {
+    while (fgets(line, sizeof(line), fp)) { // read each line in words.txt and store it to the array variable 'line'
         while (line[i] != '\0')
             i++;
-        line[i - 1] = '\0';
+        line[i - 1] = '\0'; // "aLastName\n\0" ==> "aLastName\0\0"
         i = 0;
-        e = append(line, e);
+        e = append(line, e); // when use strcpy "aLastName\0\0" ==> "aLastName\0"
     }
     clock_gettime(CLOCK_REALTIME, &end);
     cpu_time1 = diff_in_second(start, end);
@@ -67,8 +67,8 @@ int main(int argc, char *argv[])
     e = pHead;
 
     assert(findName(input, e) &&
-           "Did you implement findName() in " IMPL "?");
-    assert(0 == strcmp(findName(input, e)->lastName, "zyxel"));
+           "Did you implement findName() in " IMPL "?"); // the string "Did you ..." will be print with assert
+    assert(0 == strcmp(findName(input, e)->lastName, "zyxel")); // if find "zyxel" then continue, otherwise the program terminates
 
 #if defined(__GNUC__)
     __builtin___clear_cache((char *) pHead, (char *) pHead + sizeof(entry));
@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 
     FILE *output;
 #if defined(OPT)
-    output = fopen("opt.txt", "a");
+    output = fopen("opt.txt", "a"); //append text to the original file
 #else
     output = fopen("orig.txt", "a");
 #endif
