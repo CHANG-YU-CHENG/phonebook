@@ -18,10 +18,10 @@ phonebook_orig: $(SRCS_common) phonebook_orig.c phonebook_orig.h
 		-DIMPL="\"$@.h\"" -o $@ \
 		$(SRCS_common) $@.c
 
+# it did not allow whitespace between -DOPT and = , = and "1"
 phonebook_opt: $(SRCS_common) phonebook_opt.c phonebook_opt.h
 	$(CC) $(CFLAGS_common) $(CFLAGS_opt) \
 		-DIMPL="\"$@.h\"" -o $@ \
-		# it did not allow whitespace between -DOPT and = , = and "1"
 		-DOPT="1" \
 		$(SRCS_common) $@.c 
 

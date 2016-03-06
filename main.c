@@ -43,6 +43,18 @@ int main(int argc, char *argv[])
     e = pHead; // two pointer point to the same address(e points to the address that pHead points to)
     e->pNext = NULL;
 
+#if defined(OPT) // define hash table
+#define MAX_TABLE_SIZE 1000
+    entry *hash_pHead[MAX_TABLE_SIZE], *hash_e[MAX_TABLE_SIZE];
+    unsigned long j;
+    for(j = 0; j < MAX_TABLE_SIZE; j++) {
+        hash_pHead[j] = (entry *) malloc(sizeof(entry));
+        hash_e[j] = hash_pHead[j];
+        hash_e[j]->pNext = NULL;
+    }
+#endif
+
+
 #if defined(__GNUC__)
     __builtin___clear_cache((char *) pHead, (char *) pHead + sizeof(entry));
 #endif
@@ -52,7 +64,12 @@ int main(int argc, char *argv[])
             i++;
         line[i - 1] = '\0'; // "aLastName\n\0" ==> "aLastName\0\0"
         i = 0;
+#if defined(OPT)
+        unsigned long hash_addr = getHash_addr(line,MAX_TABLE_SIZE);
+        hash_e[hash_addr] = append(line, hash_e[hash_addr]);
+#else
         e = append(line, e); // when use strcpy "aLastName\0\0" ==> "aLastName\0"
+#endif
     }
     clock_gettime(CLOCK_REALTIME, &end);
     cpu_time1 = diff_in_second(start, end);
@@ -60,11 +77,14 @@ int main(int argc, char *argv[])
     /* close file as soon as possible */
     fclose(fp);
 
-    e = pHead;
-
     /* the givn last name to find */
     char input[MAX_LAST_NAME_SIZE] = "zyxel";
+#if defined(OPT)
+    unsigned long inputHash_addr = getHash_addr(input,MAX_TABLE_SIZE);
+    e = hash_pHead[inputHash_addr];
+#else
     e = pHead;
+#endif
 
     assert(findName(input, e) &&
            "Did you implement findName() in " IMPL "?"); // the string "Did you ..." will be print with assert

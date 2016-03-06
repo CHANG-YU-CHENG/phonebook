@@ -26,5 +26,6 @@ typedef struct __PHONE_BOOK_ENTRY_DETAIL {
 
 entry *findName(char lastname[], entry *pHead);
 entry *append(char lastName[], entry *e);
+unsigned long getHash_addr( char *str,unsigned int MAX_TABLE_SIZE);
 
 #endif

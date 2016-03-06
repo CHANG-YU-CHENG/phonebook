@@ -26,3 +26,14 @@ entry *append(char lastName[], entry *e)
 
     return e;
 }
+
+unsigned long getHash_addr( char *str, unsigned int MAX_TABLE_SIZE)
+{
+    unsigned long hash = 0;
+    int c;
+
+    while ((c = *str++))
+        hash += c;
+
+    return hash%MAX_TABLE_SIZE;
+}
