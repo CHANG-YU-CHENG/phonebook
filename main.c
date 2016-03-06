@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
     cpu_time2 = diff_in_second(start, end);
 
     FILE *output;
-#if defined(OPT)
+#if OPT==1
     output = fopen("opt.txt", "a"); //append text to the original file
 #else
     output = fopen("orig.txt", "a");
